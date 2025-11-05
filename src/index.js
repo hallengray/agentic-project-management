@@ -42,7 +42,7 @@ function displayCustomHelp() {
   console.log(`            - Uses CLI version + build metadata`);
   console.log(`            - Updated via: ${chalk.yellow('apm update')} or manually via: ${chalk.yellow('apm init --tag <tag>')}`);
   console.log('');
-  console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
+  console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/hallengray/agentic-project-management'));
 }
 
 program
@@ -263,7 +263,7 @@ template version compatible with your current CLI version.
           } else {
             errorMessage += `\n\nThis may indicate that no template releases have been published yet.`;
             errorMessage += `\nPlease try again later, or check for releases at:`;
-            errorMessage += `\nhttps://github.com/sdi2200262/agentic-project-management/releases`;
+            errorMessage += `\nhttps://github.com/hallengray/agentic-project-management/releases`;
           }
           
           throw new Error(errorMessage);
@@ -401,7 +401,7 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
         } else {
           console.log(chalk.yellow(`\nThis may indicate that no template releases have been published yet.`));
           console.log(chalk.yellow(`Please try again later, or check for releases at:`));
-          console.log(chalk.blue.underline(`https://github.com/sdi2200262/agentic-project-management/releases\n`));
+          console.log(chalk.blue.underline(`https://github.com/hallengray/agentic-project-management/releases\n`));
         }
         process.exit(1);
       }

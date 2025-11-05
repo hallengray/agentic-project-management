@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // GitHub repository configuration
-const GITHUB_REPO_OWNER = 'sdi2200262';
+const GITHUB_REPO_OWNER = 'hallengray';
 const GITHUB_REPO_NAME = 'agentic-project-management';
 const GITHUB_API_BASE = 'https://api.github.com';
 
