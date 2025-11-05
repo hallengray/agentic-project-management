@@ -1,3 +1,5 @@
+<!-- Modified by hallengray, Nov 2025 - Added Infrastructure Setup Agent specialization -->
+
 # Agent Types - APM v0.5
 
 APM employs four distinct agent types, each with clear responsibilities and carefully scoped context. These agents are **not** "personas" or role-playing characters; they are functional specializations that **leverage modern LLMs' built-in expert capabilities** through focused task assignments and targeted context management.
