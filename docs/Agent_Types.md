@@ -165,4 +165,48 @@ APM employs four distinct agent types, each with clear responsibilities and care
 
 ---
 
+### Common Ad-Hoc Specializations
+
+APM v0.5+ includes pre-built Ad-Hoc agent templates for frequent delegation scenarios:
+
+#### Infrastructure Setup Agent
+**Use Case**: Automate MCP server configuration, Supabase project initialization, GitHub token management, and development environment setup at project start.
+
+**Delegation Source**: Setup Agent or Manager Agent (during project initialization phase)
+
+**Typical Workflow**:
+1. Setup Agent completes Implementation Plan creation
+2. Manager Agent delegates infrastructure setup to Ad-Hoc Infrastructure agent
+3. Ad-Hoc agent executes:
+   - MCP server detection and configuration (Supabase, GitHub, filesystem)
+   - Project-level credential fetching and storage
+   - Workspace environment variable setup
+   - Tool integration validation
+4. Returns setup summary to Manager for Memory Log recording
+5. Manager proceeds with first Implementation Agent task assignment
+
+**Key Characteristics**:
+- **One-time execution**: Runs once per project, not per task
+- **Isolated context**: Doesn't need Implementation Plan details
+- **External tool interaction**: Calls Supabase CLI, GitHub API, file system operations
+- **Prerequisite resolution**: Ensures all tools are ready before code work begins
+
+**Template Location**: `prompts/ad-hoc/infrastructure_setup_agent.md`
+
+#### Debug Agent
+**Use Case**: Deep debugging when Implementation Agents hit blockers after 2+ failed attempts.
+
+**Delegation Source**: Implementation Agents encountering complex/systemic errors
+
+**Template Location**: `prompts/ad-hoc/debug_agent.md`
+
+#### Research Agent
+**Use Case**: Technology evaluation, library comparison, architecture research requiring extensive context analysis.
+
+**Delegation Source**: Implementation Agents or Manager Agent when facing architectural decisions
+
+**Template Location**: `prompts/ad-hoc/research_agent.md`
+
+---
+
 **See [`Token_Consumption_Tips.md`](Token_Consumption_Tips.md) for best models to use with each agent instance and [`Modifying_APM.md`](Modifying_APM.md) for ways to enhance agent capabilities with custom tools and prompts.**
