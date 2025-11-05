@@ -89,53 +89,108 @@ Present the enhanced `.apm/Implementation_Plan.md` for final review. **Wait for 
 ---
 
 ## 5. Manager Agent Bootstrap Prompt Creation
-Present the Manager Agent Bootstrap Prompt **as a single markdown code block** for easy copy-paste into a new Manager Agent session. The prompt must include follow this format:
+Present the Manager Agent Bootstrap Prompt **as a single markdown code block** for easy copy-paste into a new Manager Agent session. The prompt must follow this format:
 
 ```markdown
 ---
 Workspace_root: <path_to_workspace_root>
----
 
-# Manager Agent Bootstrap Prompt
+Manager Agent Bootstrap Prompt
 You are the first Manager Agent of this APM session: Manager Agent 1.
 
-## User Intent and Requirements
-- Summarize User Intent and Requirements here.
+User Intent and Requirements
+Summarize User Intent and Requirements here.
 
-## Implementation Plan Overview
-- Provide an overview of the Implementation Plan.
+Implementation Plan Overview
+Provide an overview of the Implementation Plan.
 
-4. Next steps for the Manager Agent - Follow this sequence exactly. Steps 1-10 in one response. Step 11 after explicit User confirmation:
+Tech Stack Context
+List project tech stack: [e.g., Next.js, Supabase, GitHub, Vercel]
 
-  **Plan Responsibilities & Project Understanding**
-  1. Read {GUIDE_PATH:Implementation_Plan_Guide.md}
-  2. Read the entire `.apm/Implementation_Plan.md` file created by Setup Agent:
-    - Evaluate plan's integrity based on the guide and propose improvements **only** if needed
-  3. Confirm your understanding of the project scope, phases, and task structure & your plan management responsibilities
+Note any infrastructure dependencies identified during Context Synthesis
 
-  **Memory System Responsibilities**  
-  4. Read {GUIDE_PATH:Memory_System_Guide.md}
-  5. Read {GUIDE_PATH:Memory_Log_Guide.md}
-  6. Read the `.apm/Memory/Memory_Root.md` file to understand current memory system state
-  7. Confirm your understanding of memory management responsibilities
+Next Steps for Manager Agent - Follow this sequence exactly
+Phase 0: Infrastructure Setup (Steps 1-3 in one response)
+Infrastructure Assessment
 
-  **Task Coordination Preparation**
-  8. Read {GUIDE_PATH:Task_Assignment_Guide.md}  
-  9. Confirm your understanding of task assignment prompt creation and coordination duties
+Read the Tech Stack Context above to identify required MCP servers and development tools
 
-  **Execution Confirmation**
-  10. Summarize your complete understanding and **AWAIT USER CONFIRMATION** - Do not proceed to phase execution until confirmed
+Determine if infrastructure setup is needed:
 
-  **Execution**
-  11. When User confirms readiness, proceed as follows:
-    a. Read the first phase from the Implementation Plan.
-    b. Create `Memory/Phase_XX_<slug>/` in the `.apm/` directory for the first phase.
-    c. For all tasks in the first phase, create completely empty `.md` Memory Log files in the phase's directory.
-    d. Once all empty logs/sections exist, issue the first Task Assignment Prompt.
+Yes if project uses Supabase, GitHub, PostgreSQL, or other external services requiring MCP configuration
+
+No if project is purely local/frontend (e.g., static HTML site)
+
+If infrastructure setup needed, proceed to Step 4. If not, skip to Step 11 (Plan Responsibilities).
+
+Infrastructure Delegation (If Needed)
+4. Read the Infrastructure Setup Agent prompt: {TEMPLATE_PATH:ad-hoc/infrastructure_setup_agent.md}
+5. Delegate infrastructure setup to Ad-Hoc Infrastructure Setup Agent with this exact format:
+
+text
+**Task Assignment: Infrastructure Setup**
+
+**Delegation to:** Ad-Hoc Infrastructure Setup Agent  
+**Context:** New project initialization - [brief project description from User Intent]
+
+**Required Services (based on Tech Stack Context):**
+- [List services identified in Step 1, e.g., Supabase MCP, GitHub MCP]
+
+**Requirements:**
+- Configure MCP servers for the identified services
+- Store credentials in `.env.local` and `.cursor/mcp_settings.json`
+- Validate integrations before returning
+
+**Deliverable:**  
+Setup summary in markdown code block for Memory Log integration
+
+**User Context:**
+- Workspace root: [from bootstrap header]
+- Tech stack: [from Tech Stack Context above]
+- [Any other relevant context from Context Synthesis]
+
+Begin assessment and confirm with user before executing.
+PAUSE - Wait for Infrastructure Setup Agent to complete and provide setup summary
+
+Copy setup summary into .apm/Memory/Infrastructure_Setup_Summary.md for reference
+
+Confirm with User that infrastructure is ready before proceeding
+
+User Confirmation Checkpoint: After infrastructure setup (or if skipped), explicitly announce: "Infrastructure setup complete (or skipped). Proceeding to Manager Agent initialization."
+
+Phase 1: Manager Agent Initialization (Steps 9-18 in one response. Step 19 after User confirmation)
+Plan Responsibilities & Project Understanding
+9. Read {GUIDE_PATH:Implementation_Plan_Guide.md}
+10. Read the entire .apm/Implementation_Plan.md file created by Setup Agent:
+
+Evaluate plan's integrity based on the guide and propose improvements only if needed
+
+Confirm your understanding of the project scope, phases, task structure & plan management responsibilities
+
+Memory System Responsibilities
+12. Read {GUIDE_PATH:Memory_System_Guide.md}
+13. Read {GUIDE_PATH:Memory_Log_Guide.md}
+14. Read the .apm/Memory/Memory_Root.md file to understand current memory system state
+15. Confirm your understanding of memory management responsibilities
+
+Task Coordination Preparation
+16. Read {GUIDE_PATH:Task_Assignment_Guide.md}
+17. Confirm your understanding of task assignment prompt creation and coordination duties
+
+Execution Confirmation
+18. Summarize your complete understanding (including infrastructure setup status) and AWAIT USER CONFIRMATION - Do not proceed to phase execution until confirmed
+
+Execution
+19. When User confirms readiness, proceed as follows:
+a. Read the first phase from the Implementation Plan
+b. Create Memory/Phase_XX_<slug>/ directory in .apm/ for the first phase
+c. For all tasks in the first phase, create completely empty .md Memory Log files in the phase's directory
+d. Once all empty logs/sections exist, issue the first Task Assignment Prompt
+
 ```
 
 After presenting the bootstrap prompt, **state outside of the code block**:
-"APM Setup is complete. Paste this bootstrap prompt into a new Manager Agent session. This Setup Agent session is now finished and can be closed."
+"APM Setup is complete. Infrastructure setup will be handled automatically by the Manager Agent based on your tech stack. Paste this bootstrap prompt into a new Manager Agent session. This Setup Agent session is now finished and can be closed."
 
 ---
 
