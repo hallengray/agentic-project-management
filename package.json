@@ -1,7 +1,7 @@
 {
   "name": "agentic-pm",
-  "version": "0.5.1",
-  "description": "Agentic Project Management CLI",
+  "version": "0.5.2-enhanced",
+  "description": "Agentic Project Management CLI - Enhanced Edition with Infrastructure Automation, Smart Model Selection, and Payment Integration",
   "scripts": {
     "build": "node scripts/build.js",
     "test": "vitest run --reporter=basic",
@@ -9,16 +9,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sdi2200262/agentic-project-management.git"
+    "url": "git+https://github.com/hallengray/agentic-project-management.git"
   },
   "keywords": [
     "agentic",
     "project-management",
     "cli",
-    "apm"
+    "apm",
+    "infrastructure-automation",
+    "model-selection",
+    "cursor",
+    "ai-agents",
+    "context7",
+    "supabase",
+    "stripe",
+    "payment-integration"
   ],
   "author": "CobuterMan <haidemenoss@gmail.com>",
-  "contributors": [],
+  "contributors": [
+    "hallengray (Enhanced Edition)"
+  ],
   "license": "MPL-2.0",
   "type": "module",
   "bin": {
@@ -26,9 +36,9 @@
     "agentic-pm": "src/index.js"
   },
   "bugs": {
-    "url": "https://github.com/sdi2200262/agentic-project-management/issues"
+    "url": "https://github.com/hallengray/agentic-project-management/issues"
   },
-  "homepage": "https://github.com/sdi2200262/agentic-project-management#readme",
+  "homepage": "https://github.com/hallengray/agentic-project-management#readme",
   "engines": {
     "node": ">=18"
   },
