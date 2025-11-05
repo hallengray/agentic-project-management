@@ -67,6 +67,32 @@ Identify which MCP servers the project needs based on:
 
 **Default Recommendation:** Start with Supabase + GitHub + Context7, ask user if they need others.
 
+## Payment Provider Configuration
+
+### Common Payment Providers
+
+| Provider | Best For | SDK | Webhook Setup | Test Mode |
+|----------|----------|-----|---------------|-----------|
+| **Stripe** | SaaS, e-commerce, subscriptions | @stripe/stripe-js | Required | ✅ Easy |
+| **PayPal** | International, consumer trust | @paypal/checkout-server-sdk | Optional | ✅ Sandbox |
+| **Square** | POS, restaurants, retail | square | Recommended | ✅ Sandbox |
+| **Paddle** | SaaS, handles VAT/tax | @paddle/paddle-js | Required | ✅ Sandbox |
+| **Lemon Squeezy** | Digital products, global tax | @lemonsqueezy/lemonsqueezy.js | Required | ✅ Test mode |
+
+### Integration Requirements
+
+**For All Providers:**
+1. API keys (public + secret)
+2. Webhook signing secret (for webhooks)
+3. SDK installation
+4. Environment variables configuration
+5. Test mode verification
+
+**Provider-Specific:**
+- **Stripe:** Requires webhook endpoint for subscriptions
+- **PayPal:** OAuth client ID + secret
+- **Square:** Access token + location ID
+- **Paddle:** Vendor ID + auth code
 
 ### 2. Project-Level Credential Fetching
 
@@ -191,7 +217,7 @@ Manual verification: Open Cursor, check MCP server status panel
 
 ## Operational Workflow
 
-### **4-Step Execution Process**
+### **4-Step Execution Process (5-Step with Payment Configuration)**
 
 #### Step 1: Assessment & Confirmation (Response 1)
 **Your Task:**
@@ -199,7 +225,27 @@ Manual verification: Open Cursor, check MCP server status panel
 2. Identify tech stack from user description
 3. Reference MCP Server Decision Matrix to suggest servers
 4. Check for existing config files
-5. Present recommendations using this format:
+5. **Ask about payment requirements:**
+
+   **Payment Provider Detection:**
+   
+   Does this project require payment processing? (yes/no)
+   
+   If yes, which payment provider?
+   - Stripe (recommended for most use cases)
+   - PayPal (international, familiar to users)
+   - Square (POS systems, restaurants)
+   - Paddle (SaaS subscriptions, handles tax)
+   - Lemon Squeezy (digital products)
+   - Other: [specify]
+   
+   Payment use cases:
+   - One-time payments
+   - Subscriptions
+   - Marketplace (split payments)
+   - POS/in-person
+
+6. Present recommendations using this format:
 
 **Recommendation Template:**
 Based on your [tech stack], I recommend:
@@ -253,6 +299,178 @@ Proceed with Supabase + GitHub + Context7? (yes/no/customize)
 - If a command fails, debug with user before continuing
 - If user needs to perform external action (create Supabase project), pause and wait
 - Show each config file content before writing (for user approval)
+
+---
+
+#### Step 2.5: Payment Provider Configuration (If Applicable)
+
+**If user selected payment provider during assessment:**
+
+##### Stripe Configuration
+
+1. **Install Stripe SDK:**
+
+   ```bash
+   npm install stripe @stripe/stripe-js
+   ```
+
+2. **Collect API Keys:**
+
+   User, please provide your Stripe keys:
+
+   **Test Mode (for development):**
+   - Publishable Key: pk_test_...
+   - Secret Key: sk_test_...
+   - Webhook Signing Secret: whsec_... (if using webhooks)
+
+   Get these from: https://dashboard.stripe.com/test/apikeys
+
+   ⚠️ **Important:** Use TEST keys during development. Production keys will be added during deployment.
+
+3. **Configure Environment Variables:**
+
+   **Add to `.env.local`:**
+   ```
+   # Stripe Configuration (Test Mode)
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+   STRIPE_SECRET_KEY=sk_test_...
+   STRIPE_WEBHOOK_SECRET=whsec_... # If using webhooks
+   ```
+
+4. **Create Stripe Client Utility:**
+
+   **File:** `lib/stripe/server.ts`
+   ```typescript
+   import Stripe from 'stripe';
+
+   export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+     apiVersion: '2024-10-28.acacia',
+     typescript: true,
+   });
+   ```
+
+   **File:** `lib/stripe/client.ts`
+   ```typescript
+   import { loadStripe } from '@stripe/stripe-js';
+
+   export const stripePromise = loadStripe(
+     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+   );
+   ```
+
+5. **Test Configuration:**
+
+   ```bash
+   # Verify Stripe connection
+   curl https://api.stripe.com/v1/charges \
+     -u sk_test_...: \
+     -d amount=1000 \
+     -d currency=usd \
+     -d source=tok_visa
+   ```
+
+6. **Document in Setup Summary** (see Step 4)
+
+##### PayPal Configuration
+
+1. **Install PayPal SDK:**
+
+   ```bash
+   npm install @paypal/checkout-server-sdk
+   ```
+
+2. **Collect API Credentials:**
+
+   User, provide PayPal Sandbox credentials:
+   - Client ID: [from PayPal Developer Dashboard]
+   - Client Secret: [from dashboard]
+
+   Get these from: https://developer.paypal.com/dashboard/
+
+3. **Configure Environment Variables:**
+
+   ```
+   # PayPal Configuration (Sandbox)
+   PAYPAL_CLIENT_ID=...
+   PAYPAL_CLIENT_SECRET=...
+   PAYPAL_MODE=sandbox # Change to 'live' for production
+   ```
+
+4. **Create PayPal Client:**
+
+   **File:** `lib/paypal/client.ts`
+   ```typescript
+   import paypal from '@paypal/checkout-server-sdk';
+
+   const environment = new paypal.core.SandboxEnvironment(
+     process.env.PAYPAL_CLIENT_ID!,
+     process.env.PAYPAL_CLIENT_SECRET!
+   );
+
+   export const paypalClient = new paypal.core.PayPalHttpClient(environment);
+   ```
+
+##### Square Configuration
+
+1. **Install Square SDK:**
+
+   ```bash
+   npm install square
+   ```
+
+2. **Collect API Credentials:**
+
+   User, provide Square Sandbox credentials:
+   - Access Token: [from Square Developer Dashboard]
+   - Location ID: [from dashboard]
+
+   Get these from: https://developer.squareup.com/apps
+
+3. **Configure Environment Variables:**
+
+   ```
+   # Square Configuration (Sandbox)
+   SQUARE_ACCESS_TOKEN=sandbox-sq0atb-...
+   SQUARE_LOCATION_ID=...
+   SQUARE_ENVIRONMENT=sandbox # Change to 'production' for live
+   ```
+
+4. **Create Square Client:**
+
+   **File:** `lib/square/client.ts`
+   ```typescript
+   import { Client, Environment } from 'square';
+
+   export const squareClient = new Client({
+     accessToken: process.env.SQUARE_ACCESS_TOKEN!,
+     environment: Environment.Sandbox,
+   });
+   ```
+
+##### Paddle Configuration
+
+1. **Install Paddle SDK:**
+
+   ```bash
+   npm install @paddle/paddle-js
+   ```
+
+2. **Collect Credentials:**
+
+   User, provide Paddle credentials:
+   - Vendor ID: [from Paddle Dashboard]
+   - Auth Code: [from dashboard]
+
+   Get these from: https://vendors.paddle.com/
+
+3. **Configure Environment Variables:**
+
+   ```
+   # Paddle Configuration (Sandbox)
+   NEXT_PUBLIC_PADDLE_VENDOR_ID=...
+   PADDLE_AUTH_CODE=...
+   PADDLE_ENVIRONMENT=sandbox
+   ```
 
 ---
 
@@ -336,6 +554,41 @@ Provide final setup summary in this **exact format** (for Manager Agent to copy 
 ✅ Version-specific results confirmed
 📋 **Purpose:** Real-time, version-aware best practices
 
+## Payment Provider Configuration
+
+### Stripe (Test Mode)
+- ✅ SDK installed: `stripe@14.x`, `@stripe/stripe-js@2.x`
+- ✅ API keys configured in `.env.local`
+- ✅ Server client: `lib/stripe/server.ts`
+- ✅ Client loader: `lib/stripe/client.ts`
+- ✅ Connection test: Successful
+- ⚠️ **Test Mode:** Using pk_test_... and sk_test_... keys
+- 📋 **Webhook Setup:** Required for subscriptions (see Stripe Dashboard)
+
+**Environment Variables Added:**
+```
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_... (server-only)
+STRIPE_WEBHOOK_SECRET=whsec_... (if webhooks configured)
+```
+
+**Test Card Numbers (Stripe Test Mode):**
+- Success: 4242 4242 4242 4242
+- Decline: 4000 0000 0000 0002
+- Requires Auth: 4000 0025 0000 3155
+
+**Next Steps:**
+1. Implementation Agent will use `lib/stripe/server.ts` for server-side operations
+2. Use `lib/stripe/client.ts` for client-side checkout
+3. Configure webhooks when implementing subscriptions/recurring payments
+4. Switch to production keys during deployment (Manager Agent will guide)
+
+### Security Notes
+- ✅ Secret keys stored in `.env.local` (not committed to git)
+- ✅ `.gitignore` updated to exclude `.env.local`
+- ⚠️ Never expose `STRIPE_SECRET_KEY` to client-side code
+- ⚠️ Always validate webhook signatures in production
+
 ## Framework Versions Detected
 
 **Core Stack:**
@@ -374,6 +627,10 @@ GITHUB_TOKEN=[redacted]
 ✅ `.env.local` - Environment variables
 ✅ `.gitignore` - Updated to exclude .env.local
 ✅ `.apm/tech-stack-versions.yml` - Framework version reference
+✅ `lib/stripe/server.ts` - Stripe server-side client (if Stripe configured)
+✅ `lib/stripe/client.ts` - Stripe client-side loader (if Stripe configured)
+✅ `lib/paypal/client.ts` - PayPal client (if PayPal configured)
+✅ `lib/square/client.ts` - Square client (if Square configured)
 
 ## Validation Results
 

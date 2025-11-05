@@ -105,9 +105,32 @@ Implementation Plan Overview
 Provide an overview of the Implementation Plan.
 
 Tech Stack Context
-List project tech stack: [e.g., Next.js, Supabase, GitHub, Vercel]
 
-Note any infrastructure dependencies identified during Context Synthesis
+**Frontend:**
+- [Framework and version, e.g., Next.js 15 (App Router)]
+- [UI library, e.g., React 19, TypeScript, Tailwind CSS, Shadcn UI components]
+
+**Backend:**
+- [Backend services, e.g., Supabase (PostgreSQL database), Supabase Real-time subscriptions, Supabase Authentication, Supabase Storage]
+
+**Deployment:**
+- [Deployment platform, e.g., Vercel (frontend), Supabase Cloud (backend)]
+
+**Version Control:**
+- [Version control system, e.g., GitHub]
+
+**Infrastructure Dependencies:**
+- **[MCP Server Name]** - [Purpose, e.g., Supabase MCP Server - Required for database operations, migrations, and real-time subscriptions]
+- **[MCP Server Name]** - [Purpose, e.g., GitHub MCP Server - Required for version control operations (if automated)]
+- **Development Tools:** [List, e.g., Node.js, npm/yarn, Git]
+
+**Payment Processing (If Applicable):**
+- Provider: [Stripe/PayPal/Square/Paddle/None]
+- Use Cases: [one-time payments/subscriptions/marketplace/POS]
+- Test Mode: Required during development
+- Required Configuration: API keys, webhook setup (if subscriptions)
+
+**Note:** If payment provider is specified, Infrastructure Setup Agent will configure SDK and API keys during Phase 0.
 
 Next Steps for Manager Agent - Follow this sequence exactly
 Phase 0: Infrastructure Setup (Steps 1-3 in one response)

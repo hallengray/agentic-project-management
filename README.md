@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.0)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.2--enhanced-blue)](https://github.com/hallengray/agentic-project-management/releases/tag/v0.5.2-enhanced)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
@@ -20,15 +20,15 @@ Think of it like having a project manager, developers, ad-hoc specialists, and a
 
 Install APM CLI globally via NPM:
 
-```bash
 npm install -g agentic-pm
-```
+
+text
 
 Or install locally in your project:
 
-```bash
 npm install agentic-pm
-```
+
+text
 
 <details>
 <summary><strong>Supported AI Assistants</strong></summary>
@@ -59,26 +59,26 @@ Follow these simple steps to start using APM in your project:
 1. **Navigate to your project directory** in your terminal.
 
 2. **Run the APM initialization command:**
-   ```bash
-   apm init
-   ```
-   
-   By default, `apm init` automatically finds and installs the latest template version compatible with your current CLI version. To install a specific template version (e.g., for rollbacks or testing), you can use the `--tag` option:
-   ```bash
-   apm init --tag v0.5.0+templates.1
-   ```
+apm init
+
+text
+
+By default, `apm init` automatically finds and installs the latest template version compatible with your current CLI version. To install a specific template version (e.g., for rollbacks or testing), you can use the `--tag` option:
+apm init --tag v0.5.0+templates.1
+
+text
 
 3. **Select your AI assistant** when prompted (e.g., Cursor, Copilot, Claude Code, etc.).
 
 4. **APM automatically installs:**
-   - `.apm/` directory with APM guides and initial assets
-   - APM slash commands in your AI assistant's command directory
-   - Necessary installation meta-data
+- `.apm/` directory with APM guides and initial assets
+- APM slash commands in your AI assistant's command directory
+- Necessary installation meta-data
 
 5. **Open your AI assistant chat** and enter the slash command:
-   ```
-   /apm-1-initiate-setup
-   ```
+/apm-1-initiate-setup
+
+text
 
 6. **Follow the established APM workflow:** <br/>
 Setup Phase (Project Discovery & Planning) → Task Loop Phase (Plan Execution)
@@ -89,14 +89,14 @@ For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Starte
 
 This fork includes significant enhancements for production use:
 
-### 1. Infrastructure Automation (Problem 1)
+### 1. Infrastructure Automation
 
 - **Auto-configures MCP servers** (Supabase, GitHub, Context7) at project start
 - **Phase 0 workflow** ensures infrastructure ready before tasks begin
 - **Saves 15-20 minutes** per project setup
 - See: `templates/ad-hoc/infrastructure_setup_agent.md`
 
-### 2. Smart Model Selection (Problem 2)
+### 2. Smart Model Selection
 
 - **Task-specific recommendations** optimize cost vs. performance
 - **Dynamic configuration** via `model-config.yml`
@@ -104,7 +104,7 @@ This fork includes significant enhancements for production use:
 - **30-50% cost reduction** compared to using premium models everywhere
 - See: `docs/Model_Selection_Guide.md`
 
-### 3. Version-Aware Best Practices (Problem 4)
+### 3. Version-Aware Best Practices
 
 - **Context7 MCP integration** for real-time documentation
 - **Version detection** from `package.json`
@@ -113,12 +113,31 @@ This fork includes significant enhancements for production use:
 - **Zero maintenance**: No static docs to update
 - See: `docs/Tech_Stack_Setup_Guide.md`
 
+### 4. Payment Provider Automation
+
+- **Supported providers**: Stripe, PayPal, Square, Paddle, Lemon Squeezy
+- **Auto-configuration** during Phase 0 alongside MCP servers
+- **Saves 25-40 minutes** vs. manual setup
+- **Creates**: SDK installation, client utilities (`lib/[provider]/`), `.env` config
+- **Test mode** enforced during development
+- See: `templates/ad-hoc/infrastructure_setup_agent.md`
+
 ### Enhancements Impact
 
-- ⏱️ **20-25 minutes saved** per project (automation)
-- 💰 **30-50% cost reduction** (smart models)
-- 🐛 **Fewer bugs** (always-current patterns)
-- 🚀 **Faster delivery** (all of the above)
+- ⏱️ **40-60 minutes saved** per project (MCP + payment automation)
+- 💰 **30-50% cost reduction** (smart model selection)
+- 🐛 **Fewer bugs** (always-current patterns via Context7)
+- 🚀 **Faster delivery** (all benefits combined)
+- 🔧 **Zero maintenance** (Context7 auto-updates documentation)
+
+## Enhanced Edition
+
+**Enhanced by:** [hallengray](https://github.com/hallengray)  
+**Original:** [Vontive/cursor-apm](https://github.com/Vontive/cursor-apm) & [sdi2200262](https://github.com/sdi2200262)  
+**Version:** v0.5.2-enhanced  
+**License:** MPL-2.0
+
+This fork extends the original APM with production-ready features for agencies and professional developers while maintaining full compatibility with the core framework.
 
 ## Documentation
 
@@ -131,6 +150,8 @@ APM v0.5 includes comprehensive documentation covering all aspects of the framew
 | **[Agent Types](docs/Agent_Types.md)** | Different agent roles and specializations |
 | **[Workflow Overview](docs/Workflow_Overview.md)** | Complete workflow walkthrough with process diagrams |
 | **[Token Consumption Tips](docs/Token_Consumption_Tips.md)** | Cost optimization strategies and model recommendations |
+| **[Model Selection Guide](docs/Model_Selection_Guide.md)** *(NEW v0.5.2)* | AI model recommendations by task complexity |
+| **[Tech Stack Setup Guide](docs/Tech_Stack_Setup_Guide.md)** *(NEW v0.5.2)* | Version-aware best practices via Context7 |
 | **[Modifying APM](docs/Modifying_APM.md)** | Customization of APM assets and advanced features |
 | **[Troubleshooting Guide](docs/Troubleshooting_Guide.md)** | Troubleshooting for common issues |
 | **[Context & Memory Management](docs/Context_and_Memory_Management.md)** (advanced) | How APM handles context and manages memory across agent instances  |
@@ -155,6 +176,7 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 - **Assistant Support:** Help expand APM support for additional AI assistants beyond the ones currently supported.
 - **Ad-Hoc Delegation Guides:** The framework includes Debug and Research delegation guides, but there's opportunity to create specialized guides for other context-intensive tasks such as testing automation, security analysis, data extraction and more.
 - **Workflow Optimizations:** Share improvements to agent protocols or memory system enhancements.
+- **Enhanced Features:** Contribute additional automation (analytics setup, error tracking, email providers, etc.)
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
 
@@ -175,7 +197,7 @@ As APM has matured from an experimental framework into a comprehensive multi-age
 **What this means:** APM remains completely free and Open Source for all uses (personal, commercial, enterprise). You can build proprietary products using APM, integrate it into commercial IDEs, and create paid services around it. The only requirements are that improvements to core APM files must be shared back with the community, and that you attribute the creators and the APM project as required by the MPL 2.0 license. Make sure to read the [LICENSE](LICENSE) file for full details.
 
 <p align="center">
-  <a href="https://github.com/sdi2200262" target="_blank">
-    <img src="assets/cobuter-man.png" alt="CobuterMan" width="150"/>
-  </a>
+<a href="https://github.com/sdi2200262" target="_blank">
+ <img src="assets/cobuter-man.png" alt="CobuterMan" width="150"/>
+</a>
 </p>
