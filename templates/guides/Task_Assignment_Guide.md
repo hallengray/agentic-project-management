@@ -77,12 +77,175 @@ Implementation Plan: **Task X.Y - [Title]** assigned to **[Agent_<Domain>]**
 Upon completion, you **MUST** log work in: `[memory_log_path]`
 Follow {GUIDE_PATH:Memory_Log_Guide.md} instructions.
 
+## Recommended Model & Rationale
+[Model recommendation section]
+
 ## Ad-Hoc Delegation
 [Only include if ad_hoc_delegation: true]
 [Manager fills this section with section §7 content guidance, including explicit guide references for Debug/Research delegations({GUIDE_PATH:Debug_Delegation_Guide.md} or {GUIDE_PATH:Research_Delegation_Guide.md})]
 ```
 
-### 2.4. Delivery Format  
+### 2.4. Model Recommendation Section
+
+Every Task Assignment Prompt must include a model recommendation to help Implementation Agents and users optimize for cost and performance.
+
+#### Required Format:
+
+Add this section to every Task Assignment Prompt after "Memory Logging" and before "Ad-Hoc Delegation" (if present):
+
+**Recommended Model & Rationale**
+
+**Recommended Model**: [Model Name from Model Selection Guide]
+
+**Tier**: [Premium / Balanced / Economical / Automatic]
+
+**Estimated Cost**: [Cost range for this task]
+
+**Reasoning**:
+
+[1-2 sentences explaining why this model is appropriate based on task complexity, context size, and criticality]
+
+**Alternative If Stuck**:
+
+[Escalation path if task proves more complex than expected]
+
+**Budget Option**:
+
+[Free or lower-cost alternative for budget-conscious users]
+
+#### Model Selection Decision Tree:
+
+Use this process to determine recommendations:
+
+**Step 1: Assess Task Complexity**
+
+- **Simple**: Single file, <50 lines, standard patterns → **Haiku 4.5** or **Auto Mode**
+
+- **Moderate**: 2-5 files, <200 lines, business logic → **GPT-5 High (Fast)**
+
+- **Complex**: Multiple files, >200 lines, novel patterns → **Sonnet 4** or **Sonnet 4.5**
+
+- **Critical**: Security, payments, performance-sensitive → **Sonnet 4.5**
+
+**Step 2: Check Context Requirements**
+
+- **Small** (<8K tokens): Can use **Haiku 4.5** or **Auto Mode**
+
+- **Medium** (8-32K): Use **GPT-5 High** or **GPT-5 Codex**
+
+- **Large** (>32K): Use **Sonnet 4** or **Sonnet 4.5**
+
+**Step 3: Reference Model Selection Guide**
+
+Consult {GUIDE_PATH:Model_Selection_Guide.md} for:
+
+- Task-specific recommendations by phase
+
+- Detailed model profiles and strengths
+
+- Cost optimization strategies
+
+- model-config.yml for current model pricing
+
+#### Implementation in Task Assignment Prompts:
+
+**For Simple Tasks (Database Migration Example):**
+
+**Recommended Model & Rationale**
+
+**Recommended Model**: Claude Haiku 4.5
+
+**Tier**: Economical
+
+**Estimated Cost**: $0.50-$1.00
+
+**Reasoning**:
+
+Database schema creation follows standard Supabase migration patterns. Haiku excels at structured, repetitive work and provides fast results at minimal cost.
+
+**Alternative If Stuck**:
+
+If migration involves complex constraints or triggers, escalate to GPT-5 Codex for better SQL pattern recognition.
+
+**Budget Option**:
+
+Auto Mode works well for standard CRUD table definitions.
+
+**For Moderate Tasks (Feature Implementation Example):**
+
+**Recommended Model & Rationale**
+
+**Recommended Model**: GPT-5 High (Fast)
+
+**Tier**: Balanced (Workhorse)
+
+**Estimated Cost**: $2-$4
+
+**Reasoning**:
+
+Real-time order status tracking requires moderate complexity: Supabase subscriptions, React state management, and multi-component coordination. GPT-5 High balances cost and capability for standard full-stack features.
+
+**Alternative If Stuck**:
+
+If subscription lifecycle management proves tricky after 2 attempts, escalate to Sonnet 4 for deeper real-time architecture guidance.
+
+**Budget Option**:
+
+Auto Mode for initial prototyping, then switch to GPT-5 High for production refinement.
+
+**For Complex Tasks (Architecture Design Example):**
+
+**Recommended Model & Rationale**
+
+**Recommended Model**: Claude Sonnet 4.5
+
+**Tier**: Premium
+
+**Estimated Cost**: $5-$10
+
+**Reasoning**:
+
+Designing offline-first sync architecture with conflict resolution requires deep reasoning about data flow, edge cases, and performance. Sonnet 4.5's large context window and architectural thinking make it ideal for this critical system design.
+
+**Alternative If Stuck**:
+
+If Sonnet 4.5 is unavailable, Sonnet 4 provides similar capabilities with slightly different reasoning style.
+
+**Budget Option**:
+
+For prototyping concepts, use GPT-5 High to explore basic patterns, then escalate to Sonnet for production architecture.
+
+#### Manager Agent Workflow:
+
+When creating Task Assignment Prompts:
+
+1. **Read task from Implementation Plan**
+
+2. **Assess complexity** using decision tree above
+
+3. **Reference {GUIDE_PATH:Model_Selection_Guide.md}** for task-specific recommendations
+
+4. **Include complete "Recommended Model & Rationale" section** in prompt
+
+5. **Track estimated costs** per phase to help users stay within budget
+
+#### Optional: Phase Cost Tracking
+
+Manager can include running cost estimates to help users budget:
+
+**Phase Cost Estimate**
+
+**Phase 1 Total (7 tasks)**: $35-$50
+
+**Running Project Total**: $35-$50 (of $150 budget)
+
+**Remaining Budget**: $100
+
+See {GUIDE_PATH:Model_Selection_Guide.md} for detailed cost breakdowns
+
+This helps users make informed decisions about when to use premium vs. economical models.
+
+### 2.5. Delivery Format  
 Present Task Assignment Prompts as **a single markdown code block with YAML frontmatter at the top.** This ensures smooth copy-paste workflow for users transferring prompts between Manager and Implementation Agents.
 
 ## 3. Context Dependency Integration

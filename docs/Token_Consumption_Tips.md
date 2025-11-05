@@ -24,41 +24,71 @@ APM is designed to be token-efficient through focused agent interactions and str
 
 ---
 
+> **🔄 Updated November 2025**: This guide has been enhanced with task-specific model recommendations. For detailed model selection by task complexity, see **[Model_Selection_Guide.md](Model_Selection_Guide.md)**. This document focuses on workflow optimization strategies, while Model_Selection_Guide.md provides granular model recommendations for individual tasks.
+
+---
+
 ## Economic Models for APM Usage
+
+> **Note:** For task-specific model recommendations, see [Model_Selection_Guide.md](Model_Selection_Guide.md). This section focuses on overall project strategies.
 
 ### Cost-Minimization Approach (Recommended for Cost-Conscious Users)
 
 **Philosophy**: Use premium models only where they provide the highest impact, rely on cost-effective options for routine execution.
 
 **Model Assignment Strategy**:
-- **Setup Agent**: Premium model for critical planning phase
-- **Manager Agent**: Mid-tier agentic model for coordination  
-- **Implementation Agents**: Budget models for most tasks, upgrade selectively
-- **Ad-Hoc Agents**: Match model tier to delegation complexity
 
-**Expected Cost Profile**: Significant cost reduction compared to premium-only approach while maintaining acceptable output quality. Recommended for personal side-projects, vibe coding sessions, and semi-complicated production apps.
+- **Setup Agent**: Premium model (**Sonnet 4.5** or **Sonnet 4**) for critical planning phase
+
+- **Manager Agent**: Mid-tier model (**GPT-5 High** or **Auto Mode**) for coordination  
+
+- **Implementation Agents**: Budget models (**Haiku 4.5** or **Auto Mode**) for most tasks, upgrade to **GPT-5 High** or **Sonnet 4** selectively
+
+- **Ad-Hoc Agents**: Match model tier to delegation complexity (see [Model_Selection_Guide.md](Model_Selection_Guide.md))
+
+**Expected Cost Profile**: Significant cost reduction (60-70% savings) compared to premium-only approach. Recommended for personal projects, prototyping, and budget-conscious production apps.
+
+**Detailed Model Recommendations**: See [Model_Selection_Guide.md](Model_Selection_Guide.md#cost-optimization-strategies) for task-by-task breakdown.
+
+---
 
 ### Performance-First Approach (Recommended for Quality-First Users)
 
 **Philosophy**: Use top-tier models throughout for maximum quality and consistency.
 
 **Model Assignment Strategy**:
-- **All Agents**: Claude Sonnet 4, Claude Sonnet 4.5, Gemini 2.5 Pro, or equivalent frontier models; avoid "thinking" models
+
+- **All Agents**: **Claude Sonnet 4.5**, **Claude Sonnet 4**, or equivalent frontier models
+
 - **Consistent Experience**: No model switching, premium reasoning throughout
 
-**Expected Cost Profile**: Highest token costs, but delivers the best consistency and quality. Recommended for users or organizations where cost is not a primary concern, such as research labs or enterprise teams prioritizing output quality.
+**Expected Cost Profile**: Highest token costs, but delivers best consistency. Recommended for mission-critical projects, client work, or when budget is not primary concern.
+
+---
 
 ### Hybrid Approach (Sweet Spot for Complex Projects)
 
 **Philosophy**: Strategic model deployment based on agent responsibilities and task complexity.
 
 **Model Assignment Strategy**:
-- **Setup Agent**: Premium model (most critical for project success)
-- **Manager Agent**: Mid-tier agentic model with premium upgrade for complex coordination
-- **Implementation Agents**: Budget for routine tasks, premium for complex/creative work
+
+- **Setup Agent**: **Sonnet 4.5** (most critical for project success)
+
+- **Manager Agent**: **GPT-5 High** with **Sonnet 4** upgrade for complex coordination
+
+- **Implementation Agents**: 
+
+  - **Haiku 4.5** or **Auto Mode** for routine tasks (configs, CRUD, simple UI)
+
+  - **GPT-5 High** for moderate features (APIs, components, state management)
+
+  - **Sonnet 4** or **Sonnet 4.5** for complex work (architecture, algorithms, performance)
+
 - **Ad-Hoc Agents**: Match model tier to delegation complexity
 
-**Expected Cost Profile**: Adequate cost reduction with minimal quality impact. Recommended for users with experience in AI-driven development who can adapt model selection to match project complexity and requirements.
+**Expected Cost Profile**: 30-50% cost reduction with minimal quality impact. Recommended for experienced developers who can judge task complexity.
+
+**Task-Specific Guidance**: Use [Model_Selection_Guide.md](Model_Selection_Guide.md#quick-decision-matrix) decision tree for each task.
 
 ---
 
@@ -66,99 +96,138 @@ APM is designed to be token-efficient through focused agent interactions and str
 
 ### Setup Agent (Highest Impact Investment)
 
-**Best Performing Models**:
-- **Claude Sonnet 4** - Outstanding project breakdown and systematic reasoning
-- **Gemini 2.5 Pro** - Excellent for complex project planning
+**Recommended Models** (see [Model_Selection_Guide.md](Model_Selection_Guide.md) for full details):
 
-**Cost-Effective Alternatives**:
-- **Cursor Auto** - Surprisingly good for structured breakdown tasks; lacks reasoning capabilities
+- **Claude Sonnet 4.5** - Best for complex project planning and architectural thinking
+
+- **Claude Sonnet 4** - Excellent alternative, slightly different reasoning style
+
+**Budget Alternative**:
+
+- **Auto Mode** - Acceptable for simple projects, but lacks deep reasoning
 
 **Why Premium Models Matter Here**:
+
 The Setup Agent creates your project foundation. Poor planning cascades through the entire session, causing more expensive fixes later. **Invest in quality here to save tokens downstream.**
 
 **Model Switching Considerations**:
+
 > **Warning**: Avoid model switching during Setup Agent sessions. Context gaps from token caching disruptions can compromise project breakdown quality. Stick with one model throughout the entire Setup Phase.
 
-**Thinking Models Warning**:
-> **Warning**: Avoid "thinking" models during project breakdown. "Thinking Mode" often disrupts the 'forced CoT' chat-to-file planning technique used there. They're great for Context Synthesis, but switching models mid-breakdown risks context loss.
+**Cost Example**:
 
-**Best Model During Testing (August 2025):**
-> **Claude Sonnet 4** was the clear top performer for Setup Agent, consistently delivering the best project breakdowns and systematic planning during testing.
+- Premium model (Sonnet 4.5): $5-15 for complete setup
+
+- This investment typically saves $30-50 in downstream fixes
+
+**Cross-Reference**: See [Model_Selection_Guide.md - Phase 1 Recommendations](Model_Selection_Guide.md#phase-1-foundation--infrastructure) for specific task breakdowns.
 
 ---
 
 ### Manager Agent (Coordination Efficiency)
 
-**Best Performing Models**:
-- **Claude Sonnet 4** - Best reasoning for complex coordination decisions
-- **Gemini 2.5 Pro** - Strong cross-agent dependency management
+**Recommended Models**:
 
-**Effective Budget Options**:
-- **Cursor Auto** - Outstanding performance during testing despite low cost
-- **Claude Sonnet 3.7** - Acceptable for straightforward projects
+- **GPT-5 High (Fast)** - Balanced cost and coordination capability (recommended default)
 
-**Model Switching Considerations**:
-> **Warning**: While model switching during Manager Agent sessions is not encouraged, real-world testing showed that context gaps and disruptions were generally manageable and did not break sessions. If a model switch is necessary (e.g., for a complex coordination task), proceed with caution and monitor for any context loss. For best results, stick with a single model throughout the Manager Agent session when possible.
+- **Claude Sonnet 4** - Best reasoning for complex multi-agent coordination
 
-**Best Models During Testing (August 2025):**
-> **Claude Sonnet 4** was the best overall performer for Manager Agent coordination, providing the most reliable reasoning, decision making, and context management for complex project scenarios.
-> **Cursor Auto** delivered outstanding Manager Agent performance during extensive real-world testing. Even after recent pricing updates, it remains the most cost-effective choice for project coordination, especially when leveraging the structured Task Assignment format.
+- **Auto Mode** - Surprisingly effective for standard workflows (free)
+
+**When to Upgrade**:
+
+Upgrade to **Sonnet 4** when:
+
+- Managing >10 cross-agent dependencies
+
+- Complex phase transitions
+
+- Resolving conflicts between Implementation Agent outputs
+
+**Model Switching**:
+
+> **Note**: Manager Agents handle model switching better than Setup Agents. If needed, switch models at phase boundaries to minimize context disruption.
+
+**Cost Example**:
+
+- Auto Mode: Free for most coordination
+
+- GPT-5 High: $10-20 per phase for moderate projects
+
+- Sonnet 4: $15-30 per phase for complex coordination
+
+**Cross-Reference**: See [Model_Selection_Guide.md - Model Selection Workflow](Model_Selection_Guide.md#-selection-workflow-for-manager-agents) for Manager's decision process.
 
 ---
 
 ### Implementation Agents (Task-Specific Optimization)
 
-**Best Performing Models**:
-Premium models such as **Claude Sonnet 4**, **Chat GPT-5** and **Gemini 2.5 Pro** deliver the highest performance for demanding implementation tasks. Consider using these models when your task involves:
-- Complex algorithm design, where advanced reasoning and error detection are critical
-- Creative or design-oriented work, such as UI/UX prototyping or generating novel solutions
-- Architecture decisions that require deep analysis, tradeoff evaluation, or synthesizing multiple requirements
+**This is where Model_Selection_Guide.md shines!**
 
-**Budget Models Excel Here**:
-- **GPT-4.1 in Copilot** - Excellent for focused, granular tasks
-- **Cursor Auto** - Strong general-purpose choice
-- **Windsurf SWE-1** - Excellent coordination capabilities  
-- **Grok Code Fast 1** - Excellent for focused, granular tasks
-- **Qwen / Kimi K2** - Exceptional value for routine implementation
-- **Grok Code Fast** - Great performance considering super low costs
+Use the **[Model Selection Decision Tree](Model_Selection_Guide.md#-selection-workflow-for-manager-agents)** for each task:
 
+**Simple Tasks** → **Haiku 4.5** or **Auto Mode**
 
-For these scenarios, the superior reasoning, creativity, and context management of premium models can significantly improve outcomes and reduce the risk of costly mistakes. While budget models excel for routine implementation, investing in premium models for these high-impact tasks is often worthwhile.
+- CRUD operations, database migrations, simple UI components
+
+- Cost: $0.50-2 per task
+
+**Moderate Tasks** → **GPT-5 High (Fast)** or **GPT-5 Codex**
+
+- Feature development, API integration, component creation
+
+- Cost: $2-4 per task
+
+**Complex Tasks** → **Claude Sonnet 4** or **Sonnet 4.5**
+
+- Architecture design, complex algorithms, performance optimization
+
+- Cost: $5-10 per task
+
+**Critical Tasks** → **Claude Sonnet 4.5**
+
+- Security features, payment processing, core business logic
+
+- Cost: $8-15 per task
+
+**Detailed Recommendations**: See [Model_Selection_Guide.md - Task-Specific Recommendations](Model_Selection_Guide.md#-task-specific-recommendations) for phase-by-phase breakdowns.
+
+**Model Switching Strategy**:
+
+> **Implementation Agents handle model switching well** due to tightly scoped context. Feel free to use **Haiku/Auto Mode** for simple tasks, then switch to **GPT-5 High** or **Sonnet** for complex ones.
 
 **Step Combination Efficiency**:
 Implementation Agents can combine adjacent steps in multi-step tasks when requested by Users or specified in Task Assignment Prompts. This reduces confirmation overhead and effectively token consumption. Particularly valuable for credit-billed subscriptions and workflow acceleration. Request combinations for related setup/configuration steps while preserving individual steps for complex implementations requiring validation or for steps requiring User guidance/feedback.
-
-**Task Assignment Context Enhancement**:
-For single-step tasks, enhance Task Assignment Prompts with additional context to reduce file-reading overhead. Either ask the Manager Agent to include more details in the prompt, or manually add information when pasting the prompt into the Implementation Agent's input. For example, if the prompt's context integration instructions require reading a file, attach it directly using your IDE's context tools. This allows the agent to skip the file read step and focus entirely on the main task, saving tokens.
-
-**Iterative Improvement for Multi-Step Tasks**:
-If a step in a multi-step task doesn't meet your expectations, ask the agent to revise and retry before proceeding to the next step. Using the natural checkpoints in multi-step tasks for feedback prevents costly rework later and ensures each step builds on a solid foundation.
-
-**Request Explanations Strategically**:
-At any stage of task execution, request agents to clarify their reasoning and outputs. This practice helps you catch potential issues early, especially for tasks outside your expertise. While it may add some tokens upfront, preventing misunderstandings saves significantly more tokens than fixing problems later. Use the natural checkpoints in multi-step tasks for these clarification requests.
-
-**Model Switching Strategy**:
-> **Implementation Agents handle model switching well.** In general, model switching **is not advised** due to potential context loss in agent sessions. However, during testing, frequent model switching based on task domain (Cursor Auto for routine tasks, Sonnet 4 for complex work) proved to be both cost-efficient and effective, and the tightly scoped task context makes this strategy viable with minimal context gaps observed. Proceed thoughtfully and monitor for any subtle context loss or unexpected behavior to avoid costly mistakes.
-
-**Best Models During Testing (August 2025):**
-> **Claude Sonnet 4** and **Gemini 2.5 Pro** tied as the top performers for complex or creative implementation tasks, each excelling in advanced reasoning and error detection.
-> **Cursor Auto** and **Windsurf SWE-1** also provided very strong results for routine implementation work, and as of August 2025 their extremely low (essentially free at the time of testing) cost makes them highly attractive for most tasks.
 
 ---
 
 ### Ad-Hoc Agents (Delegation-Specific)
 
+**Use Model_Selection_Guide.md recommendations**, but consider delegation scope:
+
 **Debug Delegation**:
-- **Budget Models**: Simple bugs, environment issues
-- **Premium Models**: Complex systemic issues, architecture problems
+
+- **Haiku 4.5** or **Auto Mode**: Simple bugs, environment issues
+
+- **GPT-5 High**: Moderate debugging, stack traces
+
+- **Sonnet 4**: Complex systemic issues, architecture problems
 
 **Research Delegation**:
-- **Budget Models**: Data gathering, documentation review
-- **Premium Models**: Web research, data analysis, strategic recommendations
 
-**Specialized Tasks**:
-- Match model capability to delegation complexity
-- Short ad-hoc sessions make premium model costs manageable
+- **Auto Mode**: Basic documentation review
+
+- **GPT-5 High**: Data analysis, synthesis
+
+- **Sonnet 4**: Strategic recommendations, architectural research
+
+**Infrastructure Setup** (Your New Agent!):
+
+- **GPT-5 High** or **Sonnet 4**: MCP configuration requires accurate CLI commands
+
+- See [infrastructure_setup_agent.md](../templates/ad-hoc/infrastructure_setup_agent.md) for specific recommendation
+
+**Cross-Reference**: Each Ad-Hoc agent template includes model recommendations in its header.
 
 ---
 

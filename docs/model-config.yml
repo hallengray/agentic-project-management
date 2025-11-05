@@ -1,0 +1,76 @@
+# Model Configuration - Enhanced APM
+# Last Updated: November 2025
+# Update this file when new models are released or pricing changes
+
+models:
+  # Tier 1: Premium - Complex reasoning, architecture, critical features
+  premium:
+    - name: "Claude Sonnet 4.5"
+      provider: "Anthropic"
+      cost_per_1m_input: 3.00
+      cost_per_1m_output: 15.00
+      context_window: 200000
+      strengths: ["Deep reasoning", "Large context", "Architecture design", "Security"]
+      best_for: ["System design", "Complex algorithms", "Performance optimization", "Security features"]
+      
+    - name: "Claude Sonnet 4"
+      provider: "Anthropic"
+      cost_per_1m_input: 3.00
+      cost_per_1m_output: 15.00
+      context_window: 200000
+      strengths: ["Excellent reasoning", "Code quality", "Documentation"]
+      best_for: ["Full-stack features", "API integration", "Technical docs"]
+
+  # Tier 2: Balanced - Most tasks, good cost/performance ratio
+  balanced:
+    - name: "GPT-5 High (Fast)"
+      provider: "OpenAI"
+      cost_per_1m_input: 2.50
+      cost_per_1m_output: 10.00
+      context_window: 128000
+      strengths: ["Speed", "Code generation", "Debugging"]
+      best_for: ["Feature development", "Bug fixes", "Component creation"]
+      
+    - name: "GPT-5 Codex"
+      provider: "OpenAI"
+      cost_per_1m_input: 2.50
+      cost_per_1m_output: 10.00
+      context_window: 128000
+      strengths: ["Code-specific", "Pattern recognition", "Refactoring"]
+      best_for: ["Code generation", "Migrations", "Utility functions"]
+
+  # Tier 3: Fast & Economical - Simple, repetitive tasks
+  economical:
+    - name: "Claude Haiku 4.5"
+      provider: "Anthropic"
+      cost_per_1m_input: 0.25
+      cost_per_1m_output: 1.25
+      context_window: 200000
+      strengths: ["Speed", "Low cost", "Simple tasks"]
+      best_for: ["CRUD ops", "Config files", "Simple components", "Migrations"]
+      
+    - name: "Composer 1"
+      provider: "Cursor"
+      cost_per_1m_input: 0.00
+      cost_per_1m_output: 0.00
+      context_window: 32000
+      strengths: ["Free", "IDE integration", "Quick edits"]
+      best_for: ["Small edits", "Quick fixes", "Exploration"]
+
+  # Tier 4: Automatic - Let Cursor decide
+  automatic:
+    - name: "Auto Mode"
+      provider: "Cursor"
+      cost_per_1m_input: 0.00
+      cost_per_1m_output: 0.00
+      context_window: "Variable"
+      strengths: ["Free", "Smart routing", "No decision needed"]
+      best_for: ["Prototyping", "Learning", "Budget-conscious projects"]
+
+# Default recommendations by task complexity
+defaults:
+  simple: "Claude Haiku 4.5"
+  moderate: "GPT-5 High (Fast)"
+  complex: "Claude Sonnet 4.5"
+  critical: "Claude Sonnet 4.5"
+  budget_mode: "Auto Mode"

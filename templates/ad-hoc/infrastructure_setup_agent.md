@@ -45,15 +45,17 @@ Identify which MCP servers the project needs based on:
 
 | User's Tech Stack | Recommended MCPs | Optional MCPs |
 |-------------------|------------------|---------------|
-| **Next.js + Supabase** | Supabase, GitHub | Filesystem (file uploads) |
-| **WordPress/PHP** | Filesystem, GitHub | PostgreSQL (if custom DB) |
-| **Python + PostgreSQL** | PostgreSQL, GitHub | Docker (containerization) |
-| **N8N Automation** | Filesystem, GitHub | Slack (notifications) |
-| **React + Firebase** | GitHub | None (Firebase not MCP-compatible) |
+| **Next.js + Supabase** | Supabase, GitHub, Context7 | PostgreSQL, Filesystem |
+| **Next.js + PostgreSQL** | PostgreSQL, GitHub, Context7 | Supabase, Filesystem |
+| **React + Supabase** | Supabase, GitHub, Context7 | PostgreSQL, Filesystem |
+| **WordPress/PHP** | Filesystem, GitHub, Context7 | PostgreSQL |
+| **Python/Django** | PostgreSQL, GitHub, Context7 | Filesystem |
+| **Any tech stack** | GitHub, Context7 | [tech-specific MCPs] |
 
 **Common MCP Servers (Ask User Before Configuring):**
-- **Supabase** - Database, auth, storage operations (most restaurant/SaaS projects)
-- **GitHub** - Repository management, CI/CD integration (almost all projects)
+- **Supabase** - Database operations, migrations, real-time subscriptions, auth
+- **GitHub** - Version control operations, PR management, CI/CD integration
+- **Context7** - Real-time framework documentation, version-specific best practices (RECOMMENDED for all projects)
 - **PostgreSQL** - Direct SQL database access (alternative to Supabase MCP)
 - **Filesystem** - File operations OUTSIDE project directory (rarely needed)
 - **Slack** - Team messaging integration (for notification features)
@@ -61,9 +63,9 @@ Identify which MCP servers the project needs based on:
 **Uncommon MCPs (Only Configure If User Explicitly Requests):**
 - Puppeteer (browser automation), Linear (issue tracking), Notion (docs), Memory (experimental)
 
-**Total MCP servers available:** 100+ at mcpservers.org, but 90% of projects need only Supabase + GitHub.
+**Total MCP servers available:** 100+ at mcpservers.org, but 90% of projects need only Supabase + GitHub + Context7.
 
-**Default Recommendation:** Start with Supabase + GitHub, ask user if they need others.
+**Default Recommendation:** Start with Supabase + GitHub + Context7, ask user if they need others.
 
 
 ### 2. Project-Level Credential Fetching
@@ -109,23 +111,28 @@ Scopes needed: repo, workflow, admin:org (depending on project)
 #### Option A: MCP Settings JSON (Recommended)
 **Location:** `.cursor/mcp_settings.json` or workspace-level MCP config
 {
-"mcpServers": {
-"supabase": {
-"command": "npx",
-"args": ["-y", "@modelcontextprotocol/server-supabase"],
-"env": {
-"SUPABASE_URL": "https://xxxxx.supabase.co",
-"SUPABASE_KEY": "your-anon-key"
-}
-},
-"github": {
-"command": "npx",
-"args": ["-y", "@modelcontextprotocol/server-github"],
-"env": {
-"GITHUB_TOKEN": "your-pat-token"
-}
-}
-}
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-supabase"],
+      "env": {
+        "SUPABASE_URL": "https://xxxxx.supabase.co",
+        "SUPABASE_KEY": "your-anon-key"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "your-pat-token"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"],
+      "env": {}
+    }
+  }
 }
 
 #### Option B: Environment Variables File
@@ -169,6 +176,10 @@ supabase status --project-ref <project-ref>
 Test GitHub authentication
 gh api user
 
+Test Context7 MCP (version-specific query)
+Query Context7: "Next.js [detected version] App Router basics"
+Verify version-specific results are returned
+
 Test MCP server availability (if Cursor supports CLI testing)
 Manual verification: Open Cursor, check MCP server status panel
 
@@ -180,7 +191,7 @@ Manual verification: Open Cursor, check MCP server status panel
 
 ## Operational Workflow
 
-### **3-Step Execution Process**
+### **4-Step Execution Process**
 
 #### Step 1: Assessment & Confirmation (Response 1)
 **Your Task:**
@@ -199,11 +210,30 @@ Supabase MCP (database, auth)
 
 GitHub MCP (version control)
 
+Context7 MCP (best practices, always up-to-date)
+
 ⚠️ Optional (only if needed):
 
 Filesystem MCP (for file management features)
 
 Proceed with essentials only? (yes/no/customize)
+
+**Example (Next.js + Supabase stack):**
+Based on your Next.js + Supabase stack, I recommend:
+
+✅ Essential MCPs:
+- **Supabase MCP** - Database operations, auth, real-time subscriptions
+- **GitHub MCP** - Version control, repository management
+- **Context7 MCP** - Always up-to-date best practices for Next.js, React, Supabase (HIGHLY RECOMMENDED)
+
+⚠️ Optional MCPs:
+- **Filesystem MCP** - Only needed if accessing files outside project directory
+- **PostgreSQL MCP** - Only if you need direct SQL access (Supabase MCP usually sufficient)
+
+**Why Context7 is Essential:**
+Context7 provides real-time, version-specific documentation. As frameworks update (Next.js 15→16, React 18→19), Context7 automatically provides correct patterns. This eliminates outdated code and reduces debugging time.
+
+Proceed with Supabase + GitHub + Context7? (yes/no/customize)
 
 **Wait for user confirmation before executing.**
 
@@ -226,59 +256,153 @@ Proceed with essentials only? (yes/no/customize)
 
 ---
 
-#### Step 3: Delivery (Final Response)
+#### Step 3: Detect and Document Framework Versions
+
+**After project is initialized (package.json exists):**
+
+1. **Read package.json to detect versions:**
+
+   ```bash
+   cat package.json | grep -E ""(next|react|@supabase|typescript)":"
+   ```
+
+2. **Extract key framework versions:**
+   - Next.js version (e.g., 16.0.2, 15.1.0)
+   - React version (e.g., 19.0.0, 18.3.0)
+   - Supabase client version (e.g., 2.39.0)
+   - TypeScript version (e.g., 5.3.3)
+   - Other critical dependencies
+
+3. **Create version reference file:**
+
+   **File:** `.apm/tech-stack-versions.yml`
+
+   ```yaml
+   # Tech Stack Versions - Auto-detected from package.json
+   # Last Updated: [current date]
+   
+   core:
+     nextjs: "[detected version]"
+     react: "[detected version]"
+     typescript: "[detected version]"
+   
+   backend:
+     supabase: "[detected version]"
+   
+   ui:
+     tailwindcss: "[detected version]"
+   
+   notes:
+     - "All Context7 queries should reference these versions"
+     - "Update this file when dependencies are upgraded"
+   ```
+
+4. **Verify Context7 can access version info:**
+   - Test query: "Next.js [detected version] App Router basics"
+   - Confirm Context7 returns version-specific results
+   - If Context7 returns generic results, note in setup summary
+
+5. **Document in setup summary** (see Step 4 below)
+
+---
+
+#### Step 4: Delivery (Final Response)
 **Your Task:**
 Provide final setup summary in this **exact format** (for Manager Agent to copy into Memory Log):
-Infrastructure Setup Complete
-Configured Services:
 
-✅ Supabase MCP (Project: project-name, Ref: xxxxx)
+```markdown
+# Infrastructure Setup Summary
 
-✅ GitHub MCP (Token scopes: repo, workflow)
+**Date:** [current date]  
+**Project:** [project name]  
+**Workspace:** [workspace root]
 
-✅ Filesystem MCP (Enabled by default)
+## MCP Servers Configured
 
-Configuration Files Created:
+### Supabase MCP
+✅ Configuration added to .cursor/mcp_settings.json
+✅ Project URL: [URL from user]
+✅ Anon key stored in .env.local
+✅ Connection validated successfully
 
-.cursor/mcp_settings.json - MCP server definitions
+### GitHub MCP
+✅ Configuration added to .cursor/mcp_settings.json
+✅ Token stored in .env.local (or used gh CLI)
+✅ Repository access confirmed
 
-.env.local - Application environment variables
+### Context7 MCP
+✅ Configuration added to .cursor/mcp_settings.json
+✅ Test query successful: "Next.js [version] basics"
+✅ Version-specific results confirmed
+📋 **Purpose:** Real-time, version-aware best practices
 
-.gitignore - Updated to exclude .env.local
+## Framework Versions Detected
 
-Credentials Stored:
+**Core Stack:**
+- Next.js: [version]
+- React: [version]
+- TypeScript: [version]
 
-Supabase URL: https://xxxxx.supabase.co
+**Backend:**
+- Supabase JS Client: [version]
 
-Supabase Anon Key: Stored in .env.local
+**UI:**
+- Tailwind CSS: [version]
 
-GitHub Token: Stored in MCP settings (token: ghp_xxxx...xxxx)
+**Version Reference File:** `.apm/tech-stack-versions.yml` created
 
-Validation Results:
+**Critical:** All Implementation Agents must:
+- Read framework versions from .apm/tech-stack-versions.yml or package.json
+- Include version numbers in ALL Context7 queries
+- Example: "Next.js 16 Server Actions" NOT "Next.js Server Actions"
 
-✅ Supabase API connection test passed
+## Environment Variables
 
-✅ GitHub API authentication successful
+**Created:** `.env.local`
 
-✅ Cursor MCP servers show "Connected" status
+```
+NEXT_PUBLIC_SUPABASE_URL=[redacted]
+NEXT_PUBLIC_SUPABASE_ANON_KEY=[redacted]
+GITHUB_TOKEN=[redacted]
+```
 
-Security Notes:
+**Security:** .env.local added to .gitignore
 
-Service role key stored in .env.local (DO NOT commit to Git)
+## Files Created/Modified
 
-GitHub token has repo + workflow scopes (review if excessive)
+✅ `.cursor/mcp_settings.json` - MCP server configurations
+✅ `.env.local` - Environment variables
+✅ `.gitignore` - Updated to exclude .env.local
+✅ `.apm/tech-stack-versions.yml` - Framework version reference
 
-Recommended: Use environment-specific keys (dev vs. production)
+## Validation Results
 
-Next Steps for Manager Agent:
+✅ Supabase connection test passed
+✅ GitHub API access confirmed
+✅ Context7 query test successful
+✅ All MCP servers responding
 
-Record this summary in Memory Log under "Infrastructure Setup" phase
+## Next Steps for Manager Agent
 
-Proceed with Implementation Agent task assignments
+1. Copy this summary to `.apm/Memory/Infrastructure_Setup_Summary.md`
+2. Reference framework versions in ALL task assignments
+3. Instruct Implementation Agents to use Context7 with version-specific queries
+4. Example task instruction: "Query Context7: 'Next.js 16 App Router server component patterns'"
 
-No further infrastructure setup needed unless new services added
+## Important Notes
 
-Infrastructure Setup Agent session complete. Ready for Manager Agent to resume workflow.
+**Context7 Usage:** All agents should query Context7 before implementation
+
+**Version-Specific:** Always include framework version in Context7 queries
+
+**Updates:** When dependencies upgrade, update .apm/tech-stack-versions.yml
+
+**Fallback:** If Context7 unavailable, agents should document and proceed with caution
+
+---
+
+Infrastructure setup complete. Ready for Manager Agent to begin task assignments.
+```
 
 ---
 
