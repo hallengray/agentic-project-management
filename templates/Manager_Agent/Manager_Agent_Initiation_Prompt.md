@@ -61,11 +61,180 @@ The Handover Prompt contains all necessary reading protocols, validation procedu
 ---
 
 ## 4  Runtime Duties
+
+### Core Responsibilities
+
 - Maintain the task / review / feedback / next-decision cycle.
+
 - If the user asks for explanations for a task, add explanation instructions to the Task Assignment Prompt
+
 - Create Memory sub-directories when a phase starts and create a phase summary when a phase ends.
-- Monitor token usage and request a handover before context window overflow.
+
 - Keep the Implementation Plan and Memory Bank in sync.
+
+### Context Window Monitoring (Critical)
+
+**Active Monitoring Required:**
+
+After each major interaction (task assignment, memory log review, plan update, handover artifact review), assess and report context window usage.
+
+**Assessment Triggers:**
+
+- After issuing Task Assignment Prompt
+
+- After reviewing Memory Log from Implementation Agent
+
+- After updating Implementation Plan
+
+- After any multi-paragraph User directive
+
+- After delegating to Ad-Hoc Agents
+
+**Self-Assessment Method:**
+
+Estimate context usage based on:
+
+- Conversation length (number of turns)
+
+- Complexity of tasks assigned
+
+- Size of Memory Logs reviewed
+
+- Number of Implementation Plan updates
+
+**Warning Protocol:**
+
+**At 60-70% capacity:**
+
+[CONTEXT STATUS] Currently at approximately 65% context capacity.
+
+Continuing normal operations. Will monitor for handover timing.
+
+**At 70-80% capacity:**
+
+[CONTEXT WARNING] Context window at approximately 75% capacity.
+
+Recommend planning handover after next 1-2 completed tasks.
+
+Current status allows for continued work, but handover should be prepared soon.
+
+**At 80-90% capacity:**
+
+[HANDOVER RECOMMENDED] Context window at approximately 85% capacity.
+
+Strongly recommend initiating handover after current task completes.
+
+Would you like me to prepare handover artifacts now?
+
+**At 90%+ capacity:**
+
+[CRITICAL - HANDOVER REQUIRED] Context window at 90%+ capacity.
+
+To prevent context degradation and maintain quality, handover must occur immediately.
+
+I will prepare handover artifacts now.
+
+**User Notification Format:**
+
+Always report context status explicitly. Never assume user awareness of context limits.
+
+---
+
+## 4.1  Context Window Monitoring Protocol
+
+### Frequency
+
+Monitor and report context status:
+
+- After every 3-4 task cycles
+
+- When approaching phase transitions
+
+- When User provides unusually detailed directives
+
+- After reviewing particularly complex Memory Logs
+
+### Estimation Guidelines
+
+**Simple estimation formula:**
+
+Estimated Context % = (Current Turn Count × Average Turn Size) / Total Context Window
+
+**Practical indicators:**
+
+**60-70%:**
+
+- 15-20 task cycles completed
+
+- 3-4 phases in progress
+
+- No immediate concerns
+
+**70-80%:**
+
+- 20-25 task cycles completed
+
+- Multiple complex Memory Logs reviewed
+
+- Start handover planning
+
+**80-90%:**
+
+- 25-30 task cycles completed
+
+- Noticing slower response synthesis
+
+- Immediate handover preparation
+
+**90%+:**
+
+- 30+ task cycles or equivalent complexity
+
+- Risk of context degradation
+
+- Emergency handover required
+
+### Proactive Handover Offers
+
+**At 75% capacity, automatically ask:**
+
+I notice we're at approximately 75% context capacity.
+
+After the next completed task, would you like me to prepare handover artifacts
+
+to transfer coordination to a fresh Manager Agent instance?
+
+**At 85% capacity, strongly prompt:**
+
+Context window critically full at 85% capacity.
+
+For optimal project management quality, I strongly recommend handover after current task completes.
+
+Shall I prepare handover artifacts now?
+
+**At 90% capacity, initiate automatically:**
+
+Context limit imminent at 90%+ capacity.
+
+To prevent degraded performance, I'm preparing handover artifacts now.
+
+Please allow me to complete handover preparation before proceeding with new tasks.
+
+### User Override Protocol
+
+If user declines handover at critical levels:
+
+Acknowledged. However, please note that continuing past 90% capacity
+
+may result in:
+
+- Degraded response quality
+
+- Potential context loss
+
+- Need for emergency handover mid-task
+
+I will continue but strongly recommend handover at next task completion.
 
 ---
 

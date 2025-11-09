@@ -245,7 +245,40 @@ See {GUIDE_PATH:Model_Selection_Guide.md} for detailed cost breakdowns
 
 This helps users make informed decisions about when to use premium vs. economical models.
 
-### 2.5. Delivery Format  
+### 2.5. User Model Selection Instruction
+
+**Critical: After creating the Task Assignment Prompt, ALWAYS include this instruction to the User:**
+
+---
+
+**📌 IMPORTANT - Model Selection Required:**
+
+Before pasting this Task Assignment into a new Composer session:
+
+1. **Select the recommended model** from the model dropdown in Cursor:
+   - Recommended: **{MODEL_NAME}** (e.g., GPT-5 High, Claude Sonnet 4.5, Haiku 4.5)
+
+2. **Why this matters:**
+   - Using the recommended model optimizes cost vs. performance for this specific task
+   - Wrong model selection can result in higher costs or suboptimal results
+
+3. **If recommended model unavailable:**
+   - Use the alternative model specified in the recommendation
+   - Document actual model used when returning Memory Log
+
+**Please confirm model selection before proceeding with task execution.**
+
+---
+
+#### Implementation Agent Model Logging
+
+When creating Memory Logs, Implementation Agents should document:
+
+- Model actually used for task execution
+- Any deviations from recommendation
+- Rationale for alternative if used
+
+### 2.6. Delivery Format  
 Present Task Assignment Prompts as **a single markdown code block with YAML frontmatter at the top.** This ensures smooth copy-paste workflow for users transferring prompts between Manager and Implementation Agents.
 
 ## 3. Context Dependency Integration
