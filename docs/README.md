@@ -18,6 +18,11 @@ This documentation suite provides in-depth coverage of APM's architecture, workf
 - **[Modifying APM](Modifying_APM.md)** - Guide for customizing APM v0.5 locally after CLI installation.
 - **[Troubleshooting Guide](Troubleshooting_Guide.md)** - Solutions for common issues encountered during Setup Phase, Task Loop Phase, and Handovers.
 
+### Enhanced Edition Guides (v0.5.2)
+- **[Model Selection Guide](Model_Selection_Guide.md)** - Task-specific AI model recommendations for cost optimization
+- **[Tech Stack Setup Guide](Tech_Stack_Setup_Guide.md)** - Version-aware best practices using Context7 MCP
+- **[Frontend-First Development Guide](Frontend_First_Development_Guide.md)** - Methodology for UI-focused projects with mock data approach
+
 ### Advanced Topics
 - **[Context and Memory Management](Context_and_Memory_Management.md)** - Deep dive into APM's architecture and Dynamic-MD Memory System.
 - **[Context and Prompt Engineering](Context_and_Prompt_Engineering.md)** - In-depth explanation of how APM's prompts and guides shape agent context and behavior.
