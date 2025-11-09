@@ -1,5 +1,3 @@
----
-
 ## Context Window Monitoring for Implementation Agents
 
 ### Responsibility
